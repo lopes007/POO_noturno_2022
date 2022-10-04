@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Tarefa Juros</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Tarefa Juros Raphael Reis e Gabriel Ribeiro</a>
+            </div>
+        </nav>
+        <div id="app" class="container-fluid m-1">
+            <h2>{{title}}</h2>
+            <div v-if="loading" class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <div v-if="error" class="alert alert-danger" role="alert">
+                {{error}}
+            </div>
+            <div class="input-group mb-3">
+                <button v-on:click="jurosSimples()" class="btn btn-outline-secondary" type="button">Calcular Simples</button>
+                Capital: <input v-model="capital" type="number" class="form-control">
+                Taxa: <input v-model="taxa" type="number" class="form-control">
+                Periodo: <input v-model="periodo" type="number" class="form-control">
+                Montante: <input v-model="montante" type="text" class="form-control" readonly>
+            </div>
+            <div class="input-group mb-3">
+                <button v-on:click="jurosComposto()" class="btn btn-outline-secondary" type="button">Calcular Composto</button>
+                Capital: <input v-model="capital2" type="number" class="form-control">
+                Taxa: <input v-model="taxa2" type="number" class="form-control">
+                Periodo: <input v-model="periodo2" type="number" class="form-control">
+                Montante: <input v-model="montante2" type="text" class="form-control" readonly>
+            </div>
+           
+            
+        </div>
+        <script>
+  const { createApp } = Vue;
+  createApp({
+    data() {
+      return {
+        title: 'JUROS',
+        loading: false,
+        error: null,
+        capital: '',
+        capital2: '',
+        taxa: '',
+        taxa2: '',
+        periodo: '',
+        periodo2: '',
+        montante: '',
+        montante2: ''
+      };
+    },
+
+    methods: {
+        jurosSimples(){
+            var url = 'juros-simples.json?capital='+ this.capital + '&taxa=' + this.taxa + '&periodo=' + this.periodo;
+            alert(url);
+            this.loading = true;
+            fetch(url).then((response) => response.json())
+                .then((data) => this.montante = data.montante)
+                .catch((e) => this.error = e)
+                .finally(() => this.loading = false);
+        },
+        jurosComposto(){
+            var url = 'juros-composto.json?capital='+ this.capital2 + '&taxa=' + this.taxa2 + '&periodo=' + this.periodo2;
+            alert(url);
+            this.loading = true;
+            fetch(url).then((response) => response.json())
+                .then((data) => this.montante2 = data.montante)
+                .catch((e) => this.error = e)
+                .finally(() => this.loading = false);
+        }
+    }
+  }).mount('#app')
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+    </body>
+</html>
