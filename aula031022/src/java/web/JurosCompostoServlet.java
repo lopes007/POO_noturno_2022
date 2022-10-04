@@ -46,7 +46,9 @@ public class JurosCompostoServlet extends HttpServlet {
                 capital = Double.parseDouble(request.getParameter("capital"));
                 taxa = Double.parseDouble(request.getParameter("taxa"));
                 periodo = Double.parseDouble(request.getParameter("periodo"));
-                montante = capital*(1+(taxa/100))*periodo;
+                montante = capital*(1+(taxa/100));
+                montante = Math.pow(montante, periodo);
+                montante = montante/100;
                 
                 JSONObject file = new JSONObject();
                 file.put("capital", capital );
